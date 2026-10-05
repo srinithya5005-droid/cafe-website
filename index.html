@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>EMBER & BEAN | Café</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:"DM Sans",sans-serif;
+    background:#f5f1ea;
+    color:#211914;
+    overflow-x:hidden;
+}
+
+/* ================= LOADER ================= */
+
+.loader{
+    position:fixed;
+    inset:0;
+    background:#17110d;
+    z-index:9999;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    transition:1s;
+}
+
+.loader h1{
+    color:white;
+    font-family:"Playfair Display",serif;
+    font-size:45px;
+    letter-spacing:4px;
+}
+
+.loader p{
+    color:#c9a77c;
+    margin-top:10px;
+    letter-spacing:4px;
+    font-size:12px;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:85px;
+    z-index:1000;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 6%;
+    color:white;
+    transition:.4s;
+}
+
+.navbar.scrolled{
+    background:rgba(20,13,9,.94);
+    backdrop-filter:blur(15px);
+    height:70px;
+}
+
+.logo{
+    font-family:"Playfair Display",serif;
+    font-size:28px;
+    font-weight:600;
+    letter-spacing:1px;
+}
+
+.logo span{
+    color:#c99d68;
+}
+
+.nav-links{
+    display:flex;
+    gap:35px;
+    list-style:none;
+}
+
+.nav-links a{
+    color:white;
+    text-decoration:none;
+    font-size:14px;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:#d4a46d;
+}
+
+.menu-btn{
+    display:none;
+    font-size:28px;
+    cursor:pointer;
+}
+
+/* ================= HERO VIDEO ================= */
+
+.hero{
+    height:100vh;
+    min-height:650px;
+    position:relative;
+    overflow:hidden;
+    color:white;
+}
+
+.hero-video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-3;
+}
+
+/* fallback background */
+
+.hero{
+    background-image:url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=2000&q=90");
+    background-size:cover;
+    background-position:center;
+}
+
+.hero-video{
+    opacity:.9;
+}
+
+.hero-overlay{
+    position:absolute;
+    inset:0;
+    background:
+    linear-gradient(
+        90deg,
+        rgba(15,9,5,.82),
+        rgba(15,9,5,.42),
+        rgba(15,9,5,.55)
+    );
+    z-index:-2;
+}
+
+.hero-content{
+    position:absolute;
+    left:8%;
+    top:50%;
+    transform:translateY(-50%);
+    max-width:750px;
+}
+
+.small-title{
+    text-transform:uppercase;
+    letter-spacing:5px;
+    color:#d8ad77;
+    font-size:13px;
+    margin-bottom:22px;
+    animation:fadeUp 1s ease forwards;
+}
+
+.hero h1{
+    font-family:"Playfair Display",serif;
+    font-size:clamp(55px,8vw,110px);
+    line-height:.92;
+    font-weight:500;
+    animation:fadeUp 1.2s ease forwards;
+}
+
+.hero h1 span{
+    color:#d6a875;
+    font-style:italic;
+}
+
+.hero-text{
+    margin-top:30px;
+    max-width:510px;
+    color:#ddd4ca;
+    line-height:1.8;
+    font-size:16px;
+    animation:fadeUp 1.4s ease forwards;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:15px;
+    margin-top:35px;
+    animation:fadeUp 1.6s ease forwards;
+}
+
+.btn{
+    padding:15px 28px;
+    border:1px solid #d2a26d;
+    text-decoration:none;
+    color:white;
+    font-size:13px;
+    transition:.4s;
+}
+
+.btn.primary{
+    background:#b77d45;
+    border-color:#b77d45;
+}
+
+.btn:hover{
+    transform:translateY(-5px);
+    background:#d19b61;
+}
+
+.scroll{
+    position:absolute;
+    bottom:30px;
+    left:8%;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-size:11px;
+    letter-spacing:3px;
+    color:#ddd;
+}
+
+.scroll-line{
+    width:55px;
+    height:1px;
+    background:#d1a06b;
+}
+
+/* ================= COMMON ================= */
+
+.section{
+    padding:110px 8%;
+}
+
+.section-label{
+    color:#a06c3c;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    font-size:12px;
+    margin-bottom:15px;
+}
+
+.section-title{
+    font-family:"Playfair Display",serif;
+    font-size:55px;
+    font-weight:500;
+    line-height:1.05;
+}
+
+.section-title span{
+    color:#a56e3d;
+    font-style:italic;
+}
+
+/* ================= INTRO ================= */
+
+.intro{
+    text-align:center;
+    max-width:900px;
+    margin:auto;
+}
+
+.intro p{
+    margin-top:25px;
+    color:#665b53;
+    line-height:1.9;
+}
+
+/* ================= ABOUT ================= */
+
+.about{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:80px;
+    align-items:center;
+}
+
+.about-image{
+    position:relative;
+    height:600px;
+    overflow:hidden;
+}
+
+.about-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:1s;
+}
+
+.about-image:hover img{
+    transform:scale(1.06);
+}
+
+.about-content p{
+    color:#665b53;
+    line-height:1.9;
+    margin-top:25px;
+}
+
+.about-content .btn{
+    display:inline-block;
+    margin-top:30px;
+    color:#211914;
+}
+
+/* ================= MENU ================= */
+
+.menu-section{
+    background:#211711;
+    color:white;
+}
+
+.menu-section .section-label{
+    color:#d1a06c;
+}
+
+.menu-section .section-title{
+    color:white;
+}
+
+.menu-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:22px;
+    margin-top:60px;
+}
+
+.menu-card{
+    background:#30231c;
+    overflow:hidden;
+    transition:.5s;
+}
+
+.menu-card:hover{
+    transform:translateY(-12px);
+}
+
+.menu-img{
+    height:270px;
+    overflow:hidden;
+}
+
+.menu-img img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.6s;
+}
+
+.menu-card:hover img{
+    transform:scale(1.1);
+}
+
+.menu-info{
+    padding:25px;
+}
+
+.menu-info h3{
+    font-family:"Playfair Display",serif;
+    font-size:24px;
+}
+
+.menu-info p{
+    color:#bdb0a6;
+    margin:10px 0 18px;
+    font-size:14px;
+}
+
+.price{
+    color:#d3a06c;
+    font-size:18px;
+}
+
+/* ================= VIDEO STORY ================= */
+
+.story{
+    height:650px;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    color:white;
+}
+
+.story-bg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-2;
+}
+
+.story-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(20,10,5,.65);
+    z-index:-1;
+}
+
+.story-content{
+    text-align:center;
+    max-width:800px;
+}
+
+.story-content h2{
+    font-family:"Playfair Display",serif;
+    font-size:70px;
+    font-weight:500;
+}
+
+.story-content h2 span{
+    color:#d5a16b;
+    font-style:italic;
+}
+
+.story-content p{
+    margin-top:25px;
+    color:#ddd;
+    line-height:1.8;
+}
+
+/* ================= OFFER ================= */
+
+.offer{
+    background:#c9955f;
+    color:#211711;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    align-items:center;
+    gap:50px;
+}
+
+.offer h2{
+    font-family:"Playfair Display",serif;
+    font-size:60px;
+    font-weight:500;
+}
+
+.offer p{
+    margin-top:20px;
+    line-height:1.8;
+}
+
+.offer-image{
+    height:400px;
+    overflow:hidden;
+}
+
+.offer-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* ================= GALLERY ================= */
+
+.gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    grid-auto-rows:250px;
+    gap:12px;
+    margin-top:60px;
+}
+
+.gallery-item{
+    overflow:hidden;
+}
+
+.gallery-item:first-child{
+    grid-column:span 2;
+    grid-row:span 2;
+}
+
+.gallery-item img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.6s;
+}
+
+.gallery-item:hover img{
+    transform:scale(1.08);
+}
+
+/* ================= TESTIMONIAL ================= */
+
+.testimonial{
+    background:#eee7dc;
+    text-align:center;
+}
+
+.quote{
+    max-width:850px;
+    margin:50px auto 0;
+}
+
+.quote p{
+    font-family:"Playfair Display",serif;
+    font-size:35px;
+    line-height:1.5;
+}
+
+.quote span{
+    display:block;
+    margin-top:25px;
+    color:#a06c3c;
+}
+
+/* ================= CONTACT ================= */
+
+.contact{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:80px;
+}
+
+.contact-text p{
+    color:#665b53;
+    line-height:1.8;
+    margin-top:25px;
+}
+
+.contact-details{
+    margin-top:35px;
+}
+
+.contact-details div{
+    margin-bottom:20px;
+}
+
+.contact-details strong{
+    display:block;
+    margin-bottom:5px;
+}
+
+.contact-details span{
+    color:#71665e;
+}
+
+.contact-form{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.contact-form input,
+.contact-form textarea{
+    width:100%;
+    border:none;
+    border-bottom:1px solid #b8aaa0;
+    background:transparent;
+    padding:17px 5px;
+    outline:none;
+    font-family:inherit;
+}
+
+.contact-form textarea{
+    height:130px;
+    resize:none;
+}
+
+.contact-form button{
+    margin-top:15px;
+    background:#211711;
+    color:white;
+    border:none;
+    padding:17px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.contact-form button:hover{
+    background:#a06c3c;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+    background:#17100c;
+    color:white;
+    padding:60px 8% 25px;
+}
+
+.footer-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-bottom:45px;
+}
+
+.footer-logo{
+    font-family:"Playfair Display",serif;
+    font-size:32px;
+}
+
+.footer-logo span{
+    color:#c9955f;
+}
+
+.social{
+    display:flex;
+    gap:20px;
+}
+
+.social a{
+    color:#ddd;
+    text-decoration:none;
+    transition:.3s;
+}
+
+.social a:hover{
+    color:#c9955f;
+}
+
+.copyright{
+    border-top:1px solid #3a2c24;
+    padding-top:20px;
+    color:#897b70;
+    font-size:12px;
+    text-align:center;
+}
+
+/* ================= REVEAL ================= */
+
+.reveal{
+    opacity:0;
+    transform:translateY(60px);
+    transition:1s ease;
+}
+
+.reveal.active{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* ================= ANIMATION ================= */
+
+@keyframes fadeUp{
+
+    from{
+        opacity:0;
+        transform:translateY(35px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:900px){
+
+    .nav-links{
+        position:absolute;
+        top:70px;
+        right:-100%;
+        width:100%;
+        background:#1b120e;
+        flex-direction:column;
+        padding:30px;
+        gap:22px;
+        transition:.4s;
+    }
+
+    .nav-links.active{
+        right:0;
+    }
+
+    .menu-btn{
+        display:block;
+    }
+
+    .hero-content{
+        left:7%;
+        right:7%;
+    }
+
+    .hero h1{
+        font-size:60px;
+    }
+
+    .about,
+    .offer,
+    .contact{
+        grid-template-columns:1fr;
+        gap:45px;
+    }
+
+    .menu-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .gallery-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .gallery-item:first-child{
+        grid-column:span 2;
+    }
+
+    .story-content h2{
+        font-size:50px;
+    }
+
+}
+
+@media(max-width:550px){
+
+    .navbar{
+        padding:0 6%;
+    }
+
+    .logo{
+        font-size:23px;
+    }
+
+    .hero h1{
+        font-size:50px;
+    }
+
+    .hero-text{
+        font-size:14px;
+    }
+
+    .section{
+        padding:80px 6%;
+    }
+
+    .section-title{
+        font-size:43px;
+    }
+
+    .about-image{
+        height:420px;
+    }
+
+    .menu-grid{
+        grid-template-columns:1fr;
+    }
+
+    .gallery-grid{
+        grid-template-columns:1fr;
+        grid-auto-rows:260px;
+    }
+
+    .gallery-item:first-child{
+        grid-column:span 1;
+        grid-row:span 1;
+    }
+
+    .offer h2{
+        font-size:45px;
+    }
+
+    .story{
+        height:550px;
+    }
+
+    .story-content h2{
+        font-size:43px;
+    }
+
+    .quote p{
+        font-size:26px;
+    }
+
+    .footer-top{
+        flex-direction:column;
+        gap:30px;
+        text-align:center;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= LOADER ================= -->
+
+<div class="loader" id="loader">
+    <h1>EMBER & BEAN</h1>
+    <p>COFFEE • CUISINE • MOMENTS</p>
+</div>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar" id="navbar">
+
+    <div class="logo">
+        EMBER <span>&</span> BEAN
+    </div>
+
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">Our Story</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+
+    <div class="menu-btn" id="menuBtn">☰</div>
+
+</header>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero" id="home">
+
+    <!-- PUT YOUR VIDEO FILE HERE -->
+    <video class="hero-video" autoplay muted loop playsinline>
+        <source src="cafe-video.mp4" type="video/mp4">
+    </video>
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+
+        <div class="small-title">
+            Welcome to Ember & Bean
+        </div>
+
+        <h1>
+            Crafted for<br>
+            <span>slow moments.</span>
+        </h1>
+
+        <p class="hero-text">
+            A warm space where freshly brewed coffee,
+            beautiful food and good conversations come together.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="#menu" class="btn primary">
+                Explore Menu
+            </a>
+
+            <a href="#contact" class="btn">
+                Visit Us
+            </a>
+        </div>
+
+    </div>
+
+    <div class="scroll">
+        <div class="scroll-line"></div>
+        SCROLL TO EXPLORE
+    </div>
+
+</section>
+
+
+<!-- ================= INTRO ================= -->
+
+<section class="section">
+
+    <div class="intro reveal">
+
+        <div class="section-label">
+            More than coffee
+        </div>
+
+        <h2 class="section-title">
+            A place to pause,<br>
+            <span>taste & connect.</span>
+        </h2>
+
+        <p>
+            From the first aroma of freshly ground beans to the last
+            conversation of the evening, every detail at Ember & Bean
+            is designed to make your time special.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ABOUT ================= -->
+
+<section class="section about" id="about">
+
+    <div class="about-image reveal">
+
+        <img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=1200&q=90">
+
+    </div>
+
+    <div class="about-content reveal">
+
+        <div class="section-label">
+            Our Story
+        </div>
+
+        <h2 class="section-title">
+            Made with<br>
+            <span>passion.</span>
+        </h2>
+
+        <p>
+            We believe great coffee is not only about the beans.
+            It is about the experience around it.
+
+            Our café brings together carefully selected coffee,
+            fresh ingredients and a comfortable atmosphere where
+            people can simply slow down and enjoy the moment.
+        </p>
+
+        <a href="#contact" class="btn">
+            Discover Our Story
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- ================= MENU ================= -->
+
+<section class="section menu-section" id="menu">
+
+    <div class="reveal">
+
+        <div class="section-label">
+            Our favourites
+        </div>
+
+        <h2 class="section-title">
+            Taste something<br>
+            <span>beautiful.</span>
+        </h2>
+
+    </div>
+
+
+    <div class="menu-grid">
+
+        <div class="menu-card reveal">
+
+            <div class="menu-img">
+                <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=900&q=90">
+            </div>
+
+            <div class="menu-info">
+                <h3>Signature Cappuccino</h3>
+
+                <p>
+                    Rich espresso with silky steamed milk.
+                </p>
+
+                <div class="price">₹149</div>
+            </div>
+
+        </div>
+
+
+        <div class="menu-card reveal">
+
+            <div class="menu-img">
+                <img src="https://images.unsplash.com/photo-1572449043416-55f4685c9bb7?auto=format&fit=crop&w=900&q=90">
+            </div>
+
+            <div class="menu-info">
+                <h3>Vanilla Latte</h3>
+
+                <p>
+                    Smooth coffee with a delicate vanilla touch.
+                </p>
+
+                <div class="price">₹169</div>
+            </div>
+
+        </div>
+
+
+        <div class="menu-card reveal">
+
+            <div class="menu-img">
+                <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=900&q=90">
+            </div>
+
+            <div class="menu-info">
+                <h3>Chocolate Donut</h3>
+
+                <p>
+                    Soft, fresh and finished with chocolate glaze.
+                </p>
+
+                <div class="price">₹99</div>
+            </div>
+
+        </div>
+
+
+        <div class="menu-card reveal">
+
+            <div class="menu-img">
+                <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=900&q=90">
+            </div>
+
+            <div class="menu-info">
+                <h3>Club Sandwich</h3>
+
+                <p>
+                    Fresh vegetables, cheese and toasted bread.
+                </p>
+
+                <div class="price">₹199</div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= VIDEO STORY ================= -->
+
+<section class="story">
+
+    <video
+        class="story-bg"
+        autoplay
+        muted
+        loop
+        playsinline>
+
+        <source src="cafe-story.mp4" type="video/mp4">
+
+    </video>
+
+    <div class="story-overlay"></div>
+
+    <div class="story-content reveal">
+
+        <div class="section-label">
+            The café experience
+        </div>
+
+        <h2>
+            Good coffee.<br>
+            <span>Good energy.</span>
+        </h2>
+
+        <p>
+            Come for the coffee. Stay for the conversations.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= OFFER ================= -->
+
+<section class="section offer">
+
+    <div class="reveal">
+
+        <div class="section-label">
+            Today's special
+        </div>
+
+        <h2>
+            Coffee &<br>
+            dessert.
+        </h2>
+
+        <p>
+            Pair your favourite coffee with one of our freshly
+            baked desserts and make your afternoon a little better.
+        </p>
+
+    </div>
+
+    <div class="offer-image reveal">
+
+        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=90">
+
+    </div>
+
+</section>
+
+
+<!-- ================= GALLERY ================= -->
+
+<section class="section" id="gallery">
+
+    <div class="reveal">
+
+        <div class="section-label">
+            Inside Ember & Bean
+        </div>
+
+        <h2 class="section-title">
+            Moments worth<br>
+            <span>remembering.</span>
+        </h2>
+
+    </div>
+
+
+    <div class="gallery-grid">
+
+        <div class="gallery-item reveal">
+            <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=90">
+        </div>
+
+        <div class="gallery-item reveal">
+            <img src="https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=900&q=90">
+        </div>
+
+        <div class="gallery-item reveal">
+            <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=900&q=90">
+        </div>
+
+        <div class="gallery-item reveal">
+            <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=900&q=90">
+        </div>
+
+        <div class="gallery-item reveal">
+            <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=900&q=90">
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= TESTIMONIAL ================= -->
+
+<section class="section testimonial">
+
+    <div class="section-label reveal">
+        Guest stories
+    </div>
+
+    <div class="quote reveal">
+
+        <p>
+            “The coffee is amazing, but the atmosphere is
+            what makes me want to come back again.”
+        </p>
+
+        <span>
+            — A happy guest
+        </span>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CONTACT ================= -->
+
+<section class="section contact" id="contact">
+
+    <div class="contact-text reveal">
+
+        <div class="section-label">
+            Come say hello
+        </div>
+
+        <h2 class="section-title">
+            Your table<br>
+            <span>is waiting.</span>
+        </h2>
+
+        <p>
+            Whether you are meeting friends, working quietly,
+            or simply looking for a great cup of coffee,
+            we would love to have you here.
+        </p>
+
+        <div class="contact-details">
+
+            <div>
+                <strong>Location</strong>
+                <span>MG Road, Bengaluru, India</span>
+            </div>
+
+            <div>
+                <strong>Opening Hours</strong>
+                <span>8:00 AM – 10:00 PM</span>
+            </div>
+
+            <div>
+                <strong>Email</strong>
+                <span>hello@emberandbean.com</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <form class="contact-form reveal" id="contactForm">
+
+        <input type="text" placeholder="Your Name" required>
+
+        <input type="email" placeholder="Your Email" required>
+
+        <input type="text" placeholder="Phone Number">
+
+        <textarea placeholder="Your Message"></textarea>
+
+        <button type="submit">
+            SEND MESSAGE
+        </button>
+
+    </form>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-top">
+
+        <div class="footer-logo">
+            EMBER <span>&</span> BEAN
+        </div>
+
+        <div class="social">
+            <a href="#">Instagram</a>
+            <a href="#">Facebook</a>
+            <a href="#">Google</a>
+        </div>
+
+    </div>
+
+    <div class="copyright">
+        © 2026 Ember & Bean Café. All Rights Reserved.
+    </div>
+
+</footer>
+
+
+<script>
+
+/* ================= LOADER ================= */
+
+window.addEventListener("load", function(){
+
+    setTimeout(function(){
+
+        document.getElementById("loader").style.opacity = "0";
+
+        setTimeout(function(){
+            document.getElementById("loader").style.display = "none";
+        },700);
+
+    },1200);
+
+});
+
+
+/* ================= NAVBAR ================= */
+
+window.addEventListener("scroll", function(){
+
+    const navbar = document.getElementById("navbar");
+
+    if(window.scrollY > 80){
+        navbar.classList.add("scrolled");
+    }
+    else{
+        navbar.classList.remove("scrolled");
+    }
+
+});
+
+
+/* ================= MOBILE MENU ================= */
+
+const menuBtn = document.getElementById("menuBtn");
+const navLinks = document.getElementById("navLinks");
+
+menuBtn.addEventListener("click", function(){
+
+    navLinks.classList.toggle("active");
+
+});
+
+
+document.querySelectorAll(".nav-links a").forEach(function(link){
+
+    link.addEventListener("click", function(){
+
+        navLinks.classList.remove("active");
+
+    });
+
+});
+
+
+/* ================= SCROLL ANIMATION ================= */
+
+const observer = new IntersectionObserver(
+
+    function(entries){
+
+        entries.forEach(function(entry){
+
+            if(entry.isIntersecting){
+
+                entry.target.classList.add("active");
+
+            }
+
+        });
+
+    },
+
+    {
+        threshold:.15
+    }
+
+);
+
+
+document.querySelectorAll(".reveal").forEach(function(element){
+
+    observer.observe(element);
+
+});
+
+
+/* ================= CONTACT FORM ================= */
+
+document.getElementById("contactForm").addEventListener("submit",function(e){
+
+    e.preventDefault();
+
+    alert("Thank you! Your message has been received.");
+
+    this.reset();
+
+});
+
+</script>
+
+</body>
+</html>
